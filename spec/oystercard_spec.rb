@@ -43,6 +43,8 @@ describe Oystercard do
   # end
 
   describe "#touch_in" do
+    let(:entry_station) {double :entry_station}
+
     it "starts journey" do
       expect{ oystercard.touch_in }.to change{oystercard.in_journey?}.from(false).to(true)
     end
@@ -63,15 +65,23 @@ describe Oystercard do
   end
 
   describe "#touch_out" do
+    let(:entry_station) {double :entry_station}
+
     it "ends journey" do
       oystercard.touch_in
       expect{oystercard.touch_out}.to change{oystercard.in_journey?}.from(true).to(false)
     end
 
-    context '# when fare is deducted' do
+    context '#when fare is deducted' do
       it 'displays remaining balance' do
         message = "Deducted #{Oystercard::FARE} from balance!"
         expect { print(message) }.to output.to_stdout
+      end
+    end
+
+    context '#when the journey is completed' do
+      it 'removes the entry stations and resets the array' do
+        expect { oystercard.touch_out }.to change { oystercard.entry_station }.to be nil
       end
     end
   end

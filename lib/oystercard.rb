@@ -29,6 +29,7 @@ class Oystercard
 
   def touch_out
     deduct(FARE)
+    @entry_station = nil
     puts "Deducted #{FARE} from balance!"
     @in_journey = false
   end
