@@ -1,5 +1,4 @@
 class Oystercard
-
   DEFAULT_BALANCE = 5
   MINIMUM_BALANCE = 1
   MAXIMUM_LIMIT = 90
@@ -8,8 +7,7 @@ class Oystercard
 
   def initialize(balance = DEFAULT_BALANCE)
     @balance = balance
-    @in_journey = false
-    @entry_station = []
+    @entry_station = nil
   end
 
   def top_up(amount)
@@ -18,20 +16,18 @@ class Oystercard
   end
 
   def in_journey?
-    @in_journey
+    !!entry_station
   end
 
-  def touch_in
-    @entry_station << "Makers Academy"
-    raise "There is not enough credit on your card!" if balance < MINIMUM_BALANCE
-    @in_journey = true
+  def touch_in(entry_station)
+    @entry_station = 'Makers Academy'
+    raise 'There is not enough credit on your card!' if balance < MINIMUM_BALANCE
   end
 
   def touch_out
     deduct(FARE)
     @entry_station = nil
     puts "Deducted #{FARE} from balance!"
-    @in_journey = false
   end
 
   private
