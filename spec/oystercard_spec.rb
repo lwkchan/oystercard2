@@ -64,26 +64,22 @@ describe Oystercard do
 
   describe '#touch_out' do
 
+    before(:each) do
+      oystercard.touch_in(entry_station)
+    end
+
     context '#when touch_out is called' do
       it 'ends the current journey' do
-        oystercard.touch_in(entry_station)
         expect { oystercard.touch_out(exit_station) }.to change { oystercard.in_journey? }.from(true).to(false)
       end
 
       it 'stores an exit station' do
         allow(oystercard).to receive(:exit_station).and_return(exit_station)
-        oystercard.touch_in(entry_station)
         oystercard.touch_out(exit_station)
         expect(oystercard.exit_station).to eq exit_station
       end
 
-      it 'deducts the journey fare and displays remaining balance' do
-        message = "Deducted #{Oystercard::FARE} from balance!"
-        expect { print(message) }.to output.to_stdout
-      end
-
       it 'resets the journey history' do
-        oystercard.touch_in(entry_station)
         expect { oystercard.touch_out(exit_station) }.to change { oystercard.entry_station }.to be nil
       end
 

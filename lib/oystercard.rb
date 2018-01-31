@@ -30,7 +30,6 @@ class Oystercard
     deduct(FARE)
     @entry_station = nil
     @exit_station = exit_station
-    puts "Deducted #{FARE} from balance!"
   end
 
   private
