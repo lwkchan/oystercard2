@@ -46,7 +46,7 @@ describe Oystercard do
       end
 
       it 'remembers and stores the argument (entry station)' do
-        expect { oystercard.touch_in(entry_station) }.to change { oystercard.entry_station }.to include "Makers Academy"
+        expect { oystercard.touch_in(entry_station) }.to change { oystercard.entry_station }.to eq "Makers Academy"
       end
     end
 
