@@ -29,8 +29,8 @@ describe Oystercard do
     end
 
     context 'when top-up balance exceeds maximum limit' do
-      it 'raises 'Maximum balance exceeded' error' do
-        error_message = 'Maximum balance of #{Oystercard::MAXIMUM_LIMIT} exceeded!'
+      it 'raises an error when top-up limit is exceeded' do
+        error_message = "Maximum balance of #{Oystercard::MAXIMUM_LIMIT} exceeded!"
         top_up_amount = Oystercard::MAXIMUM_LIMIT - oystercard.balance + 1
         expect{ oystercard.top_up(top_up_amount) }.to raise_error error_message
       end
