@@ -2,7 +2,8 @@ require 'oystercard'
 
 describe Oystercard do
   subject(:oystercard) { described_class.new }
-  let(:entry_station) { double :entry_station }
+  let(:entry_station) { double :station }
+  let(:exit_station) { double :station }
 
   describe '#initialize' do
 
@@ -34,11 +35,13 @@ describe Oystercard do
         top_up_amount = Oystercard::MAXIMUM_LIMIT - oystercard.balance + 1
         expect { oystercard.top_up(top_up_amount) }.to raise_error error_message
       end
+      it 'returns whether or not the card is in journey' do
+        expect(oystercard.in_journey?).to eq(true).or eq(false)
+      end
     end
   end
 
   describe '#touch_in' do
-    let(:entry_station) { double :entry_station }
 
     context 'when touch_in is passed an argument' do
       it 'starts journey' do
@@ -46,7 +49,7 @@ describe Oystercard do
       end
 
       it 'remembers and stores the argument (entry station)' do
-        expect { oystercard.touch_in(entry_station) }.to change { oystercard.entry_station }.to eq 'Makers Academy'
+        expect { oystercard.touch_in(entry_station) }.to change { oystercard.entry_station }.to eq entry_station
       end
     end
 
@@ -60,13 +63,18 @@ describe Oystercard do
   end
 
   describe '#touch_out' do
-    let(:entry_station) { double :station }
-    let(:exit_station) { double :station }
 
-    context 'when touch_out is called' do
+    context '#when touch_out is called' do
       it 'ends the current journey' do
         oystercard.touch_in(entry_station)
-        expect { oystercard.touch_out }.to change { oystercard.in_journey? }.from(true).to(false)
+        expect { oystercard.touch_out(exit_station) }.to change { oystercard.in_journey? }.from(true).to(false)
+      end
+
+      it 'stores an exit station' do
+        allow(oystercard).to receive(:exit_station).and_return(exit_station)
+        oystercard.touch_in(entry_station)
+        oystercard.touch_out(exit_station)
+        expect(oystercard.exit_station).to eq exit_station
       end
 
       it 'deducts the journey fare and displays remaining balance' do
@@ -76,20 +84,12 @@ describe Oystercard do
 
       it 'resets the journey history' do
         oystercard.touch_in(entry_station)
-        expect { oystercard.touch_out }.to change { oystercard.entry_station }.to be nil
+        expect { oystercard.touch_out(exit_station) }.to change { oystercard.entry_station }.to be nil
+      end
+
+      it 'deducts fare from the oyster card' do
+        expect{oystercard.touch_out(exit_station)}.to change{oystercard.balance}.by(-Oystercard::FARE)
       end
     end
   end
 end
-
-# describe '#deduct' do
-#   it 'deducts fare from the oyster card' do
-#     expect{oystercard.touch_out}.to change{oystercard.balance}.by(-Oystercard::FARE)
-#   end
-# end
-
-# describe '#in_journey' do
-#   it 'returns whether or not the card is in journey' do
-#     expect(oystercard.in_journey?).to eq(true).or eq(false)
-#   end
-# end
