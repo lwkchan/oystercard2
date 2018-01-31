@@ -1,5 +1,7 @@
 # Oystercard Challenge!
 
+<img align="right" src="https://image.ibb.co/hN1VDm/Oystercard.jpg" width="100" height="200"/>
+
 ## Introduction
 
 Welcome to my repo for the Makers Academy weekday challenge(2). My task was to create a program that satisfied the requirements below.
