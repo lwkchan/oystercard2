@@ -1,6 +1,6 @@
 # Oystercard Challenge!
 
-<img align="right" src="https://image.ibb.co/hN1VDm/Oystercard.jpg" width="100" height="200"/>
+<img align="right" src="https://image.ibb.co/hN1VDm/Oystercard.jpg" width="300" height="200"/>
 
 ## Introduction
 
