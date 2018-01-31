@@ -1,8 +1,8 @@
 require 'oystercard'
 
 describe Oystercard do
-  subject(:oystercard) {described_class.new}
-  let(:entry_station) {double :entry_station}
+  subject(:oystercard) { described_class.new }
+  let(:entry_station) { double :entry_station }
 
   describe '#initialize' do
 
@@ -24,7 +24,7 @@ describe Oystercard do
 
     context 'when top_up is passed an argument' do
       it 'tops up the oyster card' do
-        expect{ oystercard.top_up(Oystercard::MINIMUM_BALANCE)}.to change{oystercard.balance}.by(Oystercard::MINIMUM_BALANCE)
+        expect { oystercard.top_up(Oystercard::MINIMUM_BALANCE) }.to change{ oystercard.balance }.by(Oystercard::MINIMUM_BALANCE)
       end
     end
 
@@ -32,13 +32,13 @@ describe Oystercard do
       it 'raises an error when top-up limit is exceeded' do
         error_message = "Maximum balance of #{Oystercard::MAXIMUM_LIMIT} exceeded!"
         top_up_amount = Oystercard::MAXIMUM_LIMIT - oystercard.balance + 1
-        expect{ oystercard.top_up(top_up_amount) }.to raise_error error_message
+        expect { oystercard.top_up(top_up_amount) }.to raise_error error_message
       end
     end
   end
 
   describe '#touch_in' do
-    let(:entry_station) {double :entry_station}
+    let(:entry_station) { double :entry_station }
 
     context 'when touch_in is passed an argument' do
       it 'starts journey' do
@@ -54,7 +54,7 @@ describe Oystercard do
       it 'raises an error when the balance is less than the minumum amount' do
         allow(oystercard).to receive(:balance).and_return(0)
         low_credit = 'There is not enough credit on your card!'
-        expect{ oystercard.touch_in(entry_station) }.to raise_error low_credit
+        expect { oystercard.touch_in(entry_station) }.to raise_error low_credit
       end
     end
   end
@@ -66,15 +66,15 @@ describe Oystercard do
     context 'when touch_out is called' do
       it 'ends the current journey' do
         oystercard.touch_in(entry_station)
-        expect{oystercard.touch_out}.to change{oystercard.in_journey?}.from(true).to(false)
+        expect { oystercard.touch_out }.to change { oystercard.in_journey? }.from(true).to(false)
       end
 
       it 'deducts the journey fare and displays remaining balance' do
-        message = 'Deducted #{Oystercard::FARE} from balance!'
+        message = "Deducted #{Oystercard::FARE} from balance!"
         expect { print(message) }.to output.to_stdout
       end
 
-      it 'removes resets the journey history' do
+      it 'resets the journey history' do
         oystercard.touch_in(entry_station)
         expect { oystercard.touch_out }.to change { oystercard.entry_station }.to be nil
       end

@@ -19,7 +19,7 @@ class Oystercard
     !!entry_station
   end
 
-  def touch_in(entry_station)
+  def touch_in(_entry_station)
     @entry_station = 'Makers Academy'
     raise 'There is not enough credit on your card!' if balance < MINIMUM_BALANCE
   end
