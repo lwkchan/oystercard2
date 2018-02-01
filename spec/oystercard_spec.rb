@@ -6,7 +6,7 @@ describe Oystercard do
   let(:exit_station) { double :station }
 
   describe '#initialize' do
-
+    
     it 'defaults to an empty journey_history' do
       expect(oystercard.journey_history).to be_empty
     end
@@ -46,7 +46,6 @@ describe Oystercard do
   describe '#touch_in' do
 
     context 'when passed an argument' do
-
       it 'stores entry_station' do
         oystercard.touch_in(entry_station)
         expect(oystercard.current_journey[:entry_station]).to eq(entry_station)
@@ -69,7 +68,6 @@ describe Oystercard do
     end
 
     context 'when called' do
-
       it 'stores an exit station' do
         oystercard.touch_out(exit_station)
         expect(oystercard.current_journey[:exit_station]).to eq(exit_station)
