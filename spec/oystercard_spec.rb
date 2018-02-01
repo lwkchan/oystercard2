@@ -8,7 +8,7 @@ describe Oystercard do
   describe '#initialize' do
 
     it 'defaults to an empty journey_history' do
-      expect(oystercard.journey_history.count).to eq 0
+      expect(oystercard.journey_history).to be_empty
     end
 
     context 'when passed an argument' do
