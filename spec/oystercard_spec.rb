@@ -1,14 +1,20 @@
 require 'oystercard'
+require 'journey'
 
 describe Oystercard do
   subject(:oystercard) { described_class.new }
   let(:entry_station) { double :station }
   let(:exit_station) { double :station }
+  let(:current_journey) { double :current_journey }
 
   describe '#initialize' do
-    
+
     it 'defaults to an empty journey_history' do
       expect(oystercard.journey_history).to be_empty
+    end
+
+    it 'initiates a new journey object' do
+      expect(oystercard.current_journey).to be_an_instance_of(Journey)
     end
 
     context 'when passed an argument' do
@@ -45,13 +51,6 @@ describe Oystercard do
 
   describe '#touch_in' do
 
-    context 'when passed an argument' do
-      it 'stores entry_station' do
-        oystercard.touch_in(entry_station)
-        expect(oystercard.current_journey[:entry_station]).to eq(entry_station)
-      end
-    end
-
     context 'when the balance is too low' do
       it 'raises an error when the balance is less than the minumum amount' do
         allow(oystercard).to receive(:balance).and_return(0)
@@ -64,21 +63,17 @@ describe Oystercard do
   describe '#touch_out' do
 
     before(:each) do
+      oystercard.top_up(Oystercard::DEFAULT_BALANCE)
       oystercard.touch_in(entry_station)
     end
 
     context 'when called' do
-      it 'stores an exit station' do
-        oystercard.touch_out(exit_station)
-        expect(oystercard.current_journey[:exit_station]).to eq(exit_station)
-      end
-
       it 'saves a complete journey and stores to journey_history' do
         expect{oystercard.touch_out(exit_station)}.to change{oystercard.journey_history.count }.by(1)
       end
 
       it 'deducts fare from the oyster card' do
-        expect{oystercard.touch_out(exit_station)}.to change{oystercard.balance}.by(-Oystercard::FARE)
+        expect{oystercard.touch_out(exit_station)}.to change{oystercard.balance}.by(-Journey::MINIMUM_FARE)
       end
     end
   end
