@@ -1,4 +1,5 @@
 require_relative 'journey'
+require_relative 'journeylog'
 
 class Oystercard
   DEFAULT_BALANCE = 5
@@ -10,8 +11,8 @@ class Oystercard
   def initialize(balance = DEFAULT_BALANCE)
     @balance = balance
     @journey_history = []
-    # @journey_log = JourneyLog.new(@current_journey)
     @current_journey = Journey.new
+    @journey_log = JourneyLog.new(@current_journey)
   end
 
   def top_up(amount)
@@ -21,12 +22,12 @@ class Oystercard
 
   def touch_in(entry_station)
     complete_journey if !current_journey.complete? || !current_journey.new?
-    @current_journey.set_entry(entry_station)
+    @journey_log.starting(entry_station)
     raise 'There is not enough credit on your card!' if balance < MINIMUM_BALANCE
   end
 
   def touch_out(exit_station)
-    @current_journey.set_exit(exit_station)
+    @journey_log.ending(exit_station)
     complete_journey
   end
 

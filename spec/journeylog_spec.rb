@@ -15,8 +15,8 @@ describe JourneyLog do
 
   describe '#starting' do
 
-    it 'sets the entry station' do
-      
+    it 'sets the entry station of the current_journey' do
+
     end
 
   end
