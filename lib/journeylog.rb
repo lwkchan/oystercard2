@@ -6,4 +6,8 @@ class JourneyLog
     @current_journey = journey_class
     @journeys = []
   end
+
+  def starting(station)
+    @current_journey.set_entry(station)
+  end
 end

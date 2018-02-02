@@ -20,6 +20,14 @@ class Journey
     @entry_station != nil && @exit_station != nil
   end
 
+  def set_entry(station)
+    @entry_station = station
+  end
+
+  def set_exit(station)
+    @exit_station = station
+  end
+
 private
 
   def new?
