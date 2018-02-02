@@ -21,7 +21,7 @@ class Oystercard
   end
 
   def touch_in(entry_station)
-    complete_journey if !current_journey.complete? || !current_journey.new?
+    complete_journey if current_journey.entry_station != nil || !current_journey.new?
     @journey_log.starting(entry_station)
     raise 'There is not enough credit on your card!' if balance < MINIMUM_BALANCE
   end
