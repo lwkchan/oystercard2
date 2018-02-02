@@ -1,3 +1,5 @@
+require_relative 'oystercard'
+
 class JourneyLog
 
   attr_reader :current_journey, :journeys
@@ -13,6 +15,11 @@ class JourneyLog
 
   def ending(station)
     @current_journey.set_exit(station)
+  end
+
+  def save_journey
+    @journeys << @current_journey
+    @current_journey = Journey.new
   end
 
 end

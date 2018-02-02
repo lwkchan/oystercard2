@@ -9,10 +9,6 @@ describe Oystercard do
 
   describe '#initialize' do
 
-    it 'defaults to an empty journey_history' do
-      expect(oystercard.journey_history).to be_empty
-    end
-
     it 'initiates a new journey object' do
       expect(oystercard.current_journey).to be_an_instance_of(Journey)
     end
@@ -68,10 +64,7 @@ describe Oystercard do
     end
 
     context 'when called' do
-      it 'saves a complete journey and stores to journey_history' do
-        expect{oystercard.touch_out(exit_station)}.to change{oystercard.journey_history.count }.by(1)
-      end
-
+      
       it 'deducts fare from the oyster card' do
         expect{oystercard.touch_out(exit_station)}.to change{oystercard.balance}.by(-Journey::MINIMUM_FARE)
       end
